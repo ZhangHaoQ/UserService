@@ -1,4 +1,4 @@
-package UserService
+package Model
 
 import "github.com/jinzhu/gorm"
 
