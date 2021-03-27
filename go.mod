@@ -1,4 +1,4 @@
-module VoiceSearchV2
+module UserService
 
 go 1.15
 

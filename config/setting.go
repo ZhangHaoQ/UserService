@@ -5,14 +5,10 @@ import (
 	xerrors "github.com/pkg/errors"
 )
 
-var (
-	Cfg *ini.File
-	err error
-)
-
-func init() {
-	Cfg, err = ini.Load("./config.ini")
+func Init() (*ini.File, error) {
+	Cfg, err := ini.Load("D:/GoPro/UserService/config/config.ini")
 	if err != nil {
-		xerrors.Wrapf(err, "Fail to Parse 'config.ini'")
+		return nil, xerrors.Wrapf(err, "Fail to Parse 'config.ini'")
 	}
+	return Cfg, nil
 }
