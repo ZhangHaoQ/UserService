@@ -1,0 +1,29 @@
+syntax = "proto3";
+package proto;
+option go_package = "/;proto";
+
+service UserService {
+  rpc Login(LoginReq) returns (LoginRes) {}
+  rpc Register(RegisterReq) returns (RegisterRes){}
+}
+
+message LoginReq {
+  string username = 1;
+  string pwd = 2;
+}
+
+message LoginRes{
+  int64 code = 1;
+  string msg = 2;
+}
+
+message RegisterReq {
+  string username = 1;
+  string pwd = 2;
+  string mobile =3;
+}
+
+message RegisterRes {
+  int64 code = 1;
+  string msg = 2;
+}
