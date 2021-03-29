@@ -14,7 +14,7 @@ func MakeUserLoginEndPoint() endpoint.Endpoint {
 		pwd := req.Pwd
 		fmt.Println("UserName: ", username)
 		fmt.Println("PassWord: ", pwd)
-		response = pb.LoginRes{
+		response = &pb.LoginRes{
 			Code: 200,
 			Msg:  "ok",
 		}
@@ -29,7 +29,7 @@ func MakeUserRegisterEndPoint() endpoint.Endpoint {
 		pwd := req.Pwd
 		fmt.Println("UserName: ", username)
 		fmt.Println("PassWord: ", pwd)
-		response = pb.RegisterRes{Code: 200, Msg: "okok!"}
+		response = &pb.RegisterRes{Code: 200, Msg: "okok!"}
 		return response, nil
 	}
 }
