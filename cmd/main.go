@@ -1,7 +1,7 @@
 package main
 
 import (
-	"UserService/Model"
+	"UserService/Dao/repository"
 	"UserService/config"
 	"UserService/kit"
 	pb "UserService/proto"
@@ -16,7 +16,7 @@ func main() {
 	if err != nil {
 		log.Panic(err)
 	}
-	err = Model.Init(cfg)
+	err = repository.Init(cfg)
 	if err != nil {
 		log.Panic(err)
 	}

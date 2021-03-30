@@ -12,4 +12,6 @@ require (
 	google.golang.org/grpc v1.36.1
 	google.golang.org/protobuf v1.26.0
 	gopkg.in/ini.v1 v1.62.0 // indirect
+	gorm.io/driver/mysql v1.0.5
+	gorm.io/gorm v1.21.6
 )

@@ -1,7 +1,11 @@
-package Model
+package model
+
+import (
+	"gorm.io/gorm"
+)
 
 type UserModel struct {
-	BaseModel
+	gorm.Model
 	UserName string `gorm:"not null" gorm:"unique" gorm:"size:10" json:"user_name"`
 	Password string `gorm:"not null" json:"password"`
 	Member   bool   `gorm:"not null" json:"member"`
