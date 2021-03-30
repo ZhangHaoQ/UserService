@@ -1,4 +1,4 @@
-package kit
+package service
 
 import (
 	pb "UserService/proto"

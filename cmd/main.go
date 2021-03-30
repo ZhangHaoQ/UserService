@@ -1,9 +1,9 @@
 package main
 
 import (
-	"UserService/Dao/repository"
+	"UserService/Domain/repository"
+	"UserService/Domain/service"
 	"UserService/config"
-	"UserService/kit"
 	pb "UserService/proto"
 	grpctransport "github.com/go-kit/kit/transport/grpc"
 	"google.golang.org/grpc"
@@ -21,10 +21,10 @@ func main() {
 		log.Panic(err)
 	}
 
-	UserServe := kit.UserServer{}
+	UserServe := service.UserServer{}
 
-	UserLoginHandler := grpctransport.NewServer(kit.MakeUserLoginEndPoint(), kit.DecodeRequest, kit.EncodeRequest)
-	UserRegisterHandler := grpctransport.NewServer(kit.MakeUserRegisterEndPoint(), kit.DecodeRequest, kit.EncodeRequest)
+	UserLoginHandler := grpctransport.NewServer(service.MakeUserLoginEndPoint(), service.DecodeRequest, service.EncodeRequest)
+	UserRegisterHandler := grpctransport.NewServer(service.MakeUserRegisterEndPoint(), service.DecodeRequest, service.EncodeRequest)
 
 	UserServe.LoginHandler = UserLoginHandler
 	UserServe.RegisterHandler = UserRegisterHandler

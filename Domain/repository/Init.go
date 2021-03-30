@@ -1,7 +1,7 @@
 package repository
 
 import (
-	. "UserService/Dao/model"
+	. "UserService/Domain/model"
 	"context"
 	"fmt"
 	"github.com/go-ini/ini"
