@@ -23,3 +23,17 @@ func (this *UserRepository) Create(M model.UserModel) error {
 		return nil
 	})
 }
+
+func (this *UserRepository) ExistUserByName(name string) bool {
+	User := &model.UserModel{}
+	this.db.Select("id").Where("user_name = ?", name).First(User)
+	if User.ID > 0 {
+		return true
+	}
+	return false
+}
+
+func (this *UserRepository) GetUserByName(UserName string) (*model.UserModel, error) {
+	User := &model.UserModel{}
+	return User, this.db.Where("user_name = ?", UserName).First(User).Error
+}

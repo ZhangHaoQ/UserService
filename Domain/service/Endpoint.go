@@ -28,8 +28,9 @@ func MakeUserRegisterEndPoint() endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		req := request.(*pb.RegisterReq)
 		valid := validation.Validation{}
-		valid.Required(req.Username, "user_name").Message("用户名不能为空")
-		valid.Required(req.Pwd, "password").Message("密码不能为空")
+		valid.Required(req.Username, "user_name")
+		valid.Required(req.Pwd, "password")
+		valid.Phone(req.Mobile, "mobile")
 		if valid.HasErrors() {
 			response = &pb.RegisterRes{
 				Code: 400,
@@ -41,9 +42,17 @@ func MakeUserRegisterEndPoint() endpoint.Endpoint {
 		username := req.Username
 		pwd := req.Pwd
 		UR := repository.NewUserDB(context.Background())
+		if UR.ExistUserByName(username) {
+			response = &pb.RegisterRes{
+				Code: 400,
+				Msg:  "User already exist",
+			}
+			return response, nil
+		}
 		M := model.UserModel{
 			UserName: username,
 			Password: pwd,
+			Mobile:   req.Mobile,
 		}
 		err = UR.Create(M)
 		if err != nil {
