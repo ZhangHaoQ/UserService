@@ -3,6 +3,7 @@ module UserService
 go 1.15
 
 require (
+	github.com/astaxie/beego v1.12.3
 	github.com/go-ini/ini v1.62.0
 	github.com/go-kit/kit v0.10.0
 	github.com/golang/protobuf v1.5.1 // indirect

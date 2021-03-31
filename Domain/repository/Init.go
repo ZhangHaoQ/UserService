@@ -12,6 +12,8 @@ import (
 
 var GlobalDB *gorm.DB
 
+type ctxTransactionKey struct{}
+
 func Init(cfg *ini.File) error {
 	sec, err := cfg.GetSection("database")
 	if err != nil {

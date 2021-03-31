@@ -1,10 +1,15 @@
 package service
 
 import (
+	"UserService/Domain/model"
+	"UserService/Domain/repository"
 	pb "UserService/proto"
 	"context"
+	"errors"
 	"fmt"
+	"github.com/astaxie/beego/validation"
 	"github.com/go-kit/kit/endpoint"
+	xerrors "github.com/pkg/errors"
 )
 
 func MakeUserLoginEndPoint() endpoint.Endpoint {
@@ -14,10 +19,7 @@ func MakeUserLoginEndPoint() endpoint.Endpoint {
 		pwd := req.Pwd
 		fmt.Println("UserName: ", username)
 		fmt.Println("PassWord: ", pwd)
-		response = &pb.LoginRes{
-			Code: 200,
-			Msg:  "ok",
-		}
+		response = &pb.LoginRes{Code: 200, Msg: "okok!"}
 		return response, nil
 	}
 }
@@ -25,11 +27,36 @@ func MakeUserLoginEndPoint() endpoint.Endpoint {
 func MakeUserRegisterEndPoint() endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
 		req := request.(*pb.RegisterReq)
+		valid := validation.Validation{}
+		valid.Required(req.Username, "user_name").Message("用户名不能为空")
+		valid.Required(req.Pwd, "password").Message("密码不能为空")
+		if valid.HasErrors() {
+			response = &pb.RegisterRes{
+				Code: 400,
+				Msg:  "Data Error",
+			}
+			err = errors.New("DataError")
+			return response, xerrors.Wrapf(err, "Validation error")
+		}
 		username := req.Username
 		pwd := req.Pwd
-		fmt.Println("UserName: ", username)
-		fmt.Println("PassWord: ", pwd)
-		response = &pb.RegisterRes{Code: 200, Msg: "okok!"}
+		UR := repository.NewUserDB(context.Background())
+		M := model.UserModel{
+			UserName: username,
+			Password: pwd,
+		}
+		err = UR.Create(M)
+		if err != nil {
+			response = &pb.RegisterRes{
+				Code: 500,
+				Msg:  "Create Model Fail",
+			}
+			return response, err
+		}
+		response = &pb.RegisterRes{
+			Code: 200,
+			Msg:  "ok",
+		}
 		return response, nil
 	}
 }
