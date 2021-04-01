@@ -33,6 +33,11 @@ func (this *UserRepository) ExistUserByName(name string) bool {
 	return false
 }
 
+func (this *UserRepository) GetUserByMobile(Mobile string) (*model.UserModel, error) {
+	User := &model.UserModel{}
+	return User, this.db.Select("password").Where("mobile = ?", Mobile).First(User).Error
+}
+
 func (this *UserRepository) GetUserByName(UserName string) (*model.UserModel, error) {
 	User := &model.UserModel{}
 	return User, this.db.Where("user_name = ?", UserName).First(User).Error
