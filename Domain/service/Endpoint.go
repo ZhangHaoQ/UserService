@@ -6,7 +6,6 @@ import (
 	pb "UserService/proto"
 	"context"
 	"errors"
-	"fmt"
 	"github.com/astaxie/beego/validation"
 	"github.com/go-kit/kit/endpoint"
 	xerrors "github.com/pkg/errors"
@@ -17,8 +16,23 @@ func MakeUserLoginEndPoint() endpoint.Endpoint {
 		req := request.(*pb.LoginReq)
 		username := req.Username
 		pwd := req.Pwd
-		fmt.Println("UserName: ", username)
-		fmt.Println("PassWord: ", pwd)
+		UR := repository.NewUserDB(context.Background())
+		if !UR.ExistUserByName(username) {
+			response = &pb.RegisterRes{
+				Code: 400,
+				Msg:  "User not exist",
+			}
+			return response, nil
+		}
+		user, err := UR.GetPassWordByName(username)
+		if err != nil {
+			response = &pb.LoginRes{Code: 400, Msg: "NO!!!!"}
+			return response, err
+		}
+		if pwd != user.Password {
+			response = &pb.LoginRes{Code: 400, Msg: "PassWord Wrong!"}
+			return response, nil
+		}
 		response = &pb.LoginRes{Code: 200, Msg: "okok!"}
 		return response, nil
 	}

@@ -15,7 +15,8 @@ func main() {
 	}
 	Uclient := pb.NewUserServiceClient(conn)
 
-	res, err := Uclient.Register(context.Background(), &pb.RegisterReq{Username: "LYY", Pwd: "741741741", Mobile: "17645051903"})
+	//res, err := Uclient.Register(context.Background(), &pb.RegisterReq{Username: "LYY", Pwd: "741741741", Mobile: "17645051903"})
+	res, err := Uclient.Login(context.Background(), &pb.LoginReq{Username: "LYY", Pwd: "741741741"})
 
 	if err != nil {
 		fmt.Println(err)

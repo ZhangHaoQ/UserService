@@ -33,12 +33,20 @@ func (this *UserRepository) ExistUserByName(name string) bool {
 	return false
 }
 
-func (this *UserRepository) GetUserByMobile(Mobile string) (*model.UserModel, error) {
-	User := &model.UserModel{}
-	return User, this.db.Select("password").Where("mobile = ?", Mobile).First(User).Error
-}
-
 func (this *UserRepository) GetUserByName(UserName string) (*model.UserModel, error) {
 	User := &model.UserModel{}
-	return User, this.db.Where("user_name = ?", UserName).First(User).Error
+	err := this.db.Where("user_name = ?", UserName).First(User).Error
+	if err != nil {
+		return nil, xerrors.Wrapf(err, "Query User Error")
+	}
+	return User, nil
+}
+
+func (this *UserRepository) GetPassWordByName(UserName string) (*model.UserModel, error) {
+	User := &model.UserModel{}
+	err := this.db.Select("password").Where("user_name = ?", UserName).First(User).Error
+	if err != nil {
+		return nil, xerrors.Wrapf(err, "Query PassWord Error")
+	}
+	return User, nil
 }
