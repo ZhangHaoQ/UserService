@@ -3,6 +3,7 @@ package main
 import (
 	"UserService/Domain/repository"
 	"UserService/Domain/service"
+	"UserService/Register"
 	"UserService/config"
 	pb "UserService/proto"
 	grpctransport "github.com/go-kit/kit/transport/grpc"
@@ -17,6 +18,15 @@ func main() {
 		log.Panic(err)
 	}
 	err = repository.Init(cfg)
+	if err != nil {
+		log.Panic(err)
+	}
+	namingClient, err := Register.InitNacos()
+	if err != nil {
+		log.Panic(err)
+	}
+
+	_, err = Register.RegisterService(namingClient)
 	if err != nil {
 		log.Panic(err)
 	}
